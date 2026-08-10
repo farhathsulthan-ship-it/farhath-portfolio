@@ -17,27 +17,39 @@ export function Contact() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    subject: "",
     message: "",
   });
+
+  // =====================================================
+  // WHATSAPP SUBMIT
+  // =====================================================
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
 
     setStatus("sending");
 
-    const gmailUrl =
-      "https://mail.google.com/mail/?view=cm&fs=1" +
-      `&to=${encodeURIComponent(personal.email)}` +
-      `&su=${encodeURIComponent(
-        form.subject || "Portfolio Contact"
-      )}` +
-      `&body=${encodeURIComponent(
-        `${form.message}\n\n— ${form.name} (${form.email})`
+    const whatsappMessage = `
+Hello Farhath,
+
+I received a new message through your portfolio.
+
+Name: ${form.name}
+Email: ${form.email}
+
+Message:
+${form.message}
+
+Thank you.
+    `.trim();
+
+    const whatsappUrl =
+      `https://wa.me/919092115542?text=${encodeURIComponent(
+        whatsappMessage
       )}`;
 
     setTimeout(() => {
-      window.open(gmailUrl, "_blank");
+      window.open(whatsappUrl, "_blank");
 
       setStatus("sent");
 
@@ -47,13 +59,17 @@ export function Contact() {
     }, 500);
   };
 
+  // =====================================================
+  // CONTACT INFORMATION
+  // =====================================================
+
   const contactInfo = [
     {
       icon: FaEnvelope,
       label: "EMAIL",
       value: personal.email,
 
-      // Opens Gmail Compose directly
+      // Opens Gmail Compose
       href: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
         personal.email
       )}`,
@@ -102,7 +118,10 @@ export function Contact() {
     >
       <div className="mx-auto max-w-7xl">
 
-        {/* Section Heading */}
+        {/* =====================================================
+            SECTION HEADING
+        ===================================================== */}
+
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -124,9 +143,9 @@ export function Contact() {
 
         <div className="grid gap-8 lg:grid-cols-2">
 
-          {/* ========================================= */}
-          {/* CONTACT INFORMATION */}
-          {/* ========================================= */}
+          {/* =====================================================
+              CONTACT INFORMATION
+          ===================================================== */}
 
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -154,7 +173,6 @@ export function Contact() {
 
                     {/* Information */}
                     <div className="min-w-0">
-
                       <p className="mb-1 text-xs font-medium tracking-[0.25em] text-text-secondary">
                         {c.label}
                       </p>
@@ -162,8 +180,8 @@ export function Contact() {
                       <p className="break-words text-sm font-medium text-cream transition-colors duration-300 group-hover:text-gold md:text-base">
                         {c.value}
                       </p>
-
                     </div>
+
                   </div>
                 );
 
@@ -197,7 +215,10 @@ export function Contact() {
 
             </div>
 
-            {/* Resume */}
+            {/* =====================================================
+                DOWNLOAD RESUME
+            ===================================================== */}
+
             <a
               href={personal.resume}
               download
@@ -210,10 +231,9 @@ export function Contact() {
 
           </motion.div>
 
-
-          {/* ========================================= */}
-          {/* CONTACT FORM */}
-          {/* ========================================= */}
+          {/* =====================================================
+              CONTACT FORM
+          ===================================================== */}
 
           <motion.div
             initial={{ opacity: 0, x: 30 }}
@@ -232,7 +252,10 @@ export function Contact() {
               className="space-y-5"
             >
 
-              {/* Name */}
+              {/* =====================================================
+                  NAME
+              ===================================================== */}
+
               <Field
                 label="Your Name"
                 value={form.name}
@@ -245,7 +268,10 @@ export function Contact() {
                 }
               />
 
-              {/* Email */}
+              {/* =====================================================
+                  EMAIL
+              ===================================================== */}
+
               <Field
                 label="Your Email"
                 type="email"
@@ -259,19 +285,10 @@ export function Contact() {
                 }
               />
 
-              {/* Subject */}
-              <Field
-                label="Subject"
-                value={form.subject}
-                onChange={(value) =>
-                  setForm({
-                    ...form,
-                    subject: value,
-                  })
-                }
-              />
+              {/* =====================================================
+                  MESSAGE
+              ===================================================== */}
 
-              {/* Message */}
               <Field
                 label="Message"
                 value={form.message}
@@ -285,7 +302,10 @@ export function Contact() {
                 }
               />
 
-              {/* Submit Button */}
+              {/* =====================================================
+                  SEND TO WHATSAPP
+              ===================================================== */}
+
               <button
                 type="submit"
                 disabled={status === "sending"}
@@ -296,9 +316,9 @@ export function Contact() {
 
                 {status === "idle" && "Send Message"}
 
-                {status === "sending" && "Opening Gmail..."}
+                {status === "sending" && "Opening WhatsApp..."}
 
-                {status === "sent" && "Gmail Opened ✓"}
+                {status === "sent" && "WhatsApp Opened ✓"}
 
               </button>
 
@@ -332,6 +352,7 @@ function Field({
   textarea?: boolean;
   required?: boolean;
 }) {
+
   const base =
     "w-full rounded-2xl border border-gold/20 bg-bg-soft/40 px-4 py-3 text-cream placeholder:text-text-secondary/50 focus:border-gold focus:bg-bg-soft/60 focus:outline-none transition-all duration-300";
 
@@ -343,6 +364,7 @@ function Field({
       </label>
 
       {textarea ? (
+
         <textarea
           rows={5}
           required={required}
@@ -351,7 +373,9 @@ function Field({
           className={`${base} resize-none`}
           placeholder={`Enter your ${label.toLowerCase()}...`}
         />
+
       ) : (
+
         <input
           type={type}
           required={required}
@@ -360,6 +384,7 @@ function Field({
           className={base}
           placeholder={`Enter your ${label.toLowerCase()}...`}
         />
+
       )}
 
     </div>
